@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Violence Detection</title>
+    <link rel="stylesheet" href="/static/styles/styles.css">
+</head>
+<body>
+    <h1>Video Violence Detection</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="videoFile" name="video" accept="video/*" required>
+        <button type="submit">Upload Video</button>
+    </form>
+    <div id="progressContainer" style="display: none;">
+        <p>Processing Video...</p>
+        <div id="progressBar">
+            <div id="progressFill"></div>
+        </div>
+        <p id="progressText">0%</p>
+    </div>
+    <div id="result"></div>
+    <video id="annotatedVideo" controls style="display: none;">
+        <source id="videoSource" src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script src="/static/scripts/main.js"></script>
+</body>
+</html>

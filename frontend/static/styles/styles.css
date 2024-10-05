@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin: 20px 0;
+}
+
+#progressContainer {
+    margin-top: 20px;
+}
+
+#progressBar {
+    width: 80%;
+    background-color: #ddd;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+    height: 30px;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    transition: width 0.2s;
+}
+
+#progressText {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #d9534f;
+}
+
+video {
+    margin-top: 20px;
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #333;
+    border-radius: 10px;
+}
