@@ -1,22 +1,38 @@
-import torch
+from ultralytics import YOLO
+import cv2  # OpenCV for video processing
 
 class FightDetectionModel:
     def __init__(self, model_path):
         # Load the YOLOv8 model from the specified path
-        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=model_path, force_reload=True)
+        self.model = YOLO(model_path)
 
     def detect(self, video_path):
-        # Run the model on the video
-        results = self.model(video_path)
+        # Load the video using OpenCV
+        cap = cv2.VideoCapture(str(video_path))
+        results = []
 
-        # Extract relevant information from results
-        detected_classes = results.pred[0][:, -1].tolist()  # Detected classes
-        boxes = results.pred[0][:, :4].tolist()  # Bounding boxes
-        confidences = results.pred[0][:, 4].tolist()  # Confidence scores
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-        return {
-            'boxes': boxes,
-            'classes': detected_classes,
-            'confidences': confidences,
-            'original_image': results.imgs[0]  # This may be used to return an annotated image
-        }
+            # Perform inference
+            detections = self.model(frame)
+            results.append(detections)
+
+        cap.release()
+        
+        # Process results
+        processed_results = []
+        for detection in results:
+            for det in detection:
+                boxes = det.boxes.cpu().numpy().tolist()
+                scores = det.conf.cpu().numpy().tolist()
+                classes = det.cls.cpu().numpy().tolist()
+                processed_results.append({
+                    'boxes': boxes,
+                    'scores': scores,
+                    'classes': classes
+                })
+
+        return processed_results
