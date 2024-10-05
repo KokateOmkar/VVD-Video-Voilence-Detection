@@ -1,34 +1,22 @@
-import cv2
-import numpy as np
-# Import your specific model libraries
-# For example, TensorFlow, PyTorch, etc.
+import torch
 
-class ViolenceDetector:
-    def __init__(self):
-        # Initialize your model here
-        # self.model = load_model('path_to_model')
-        pass
+class FightDetectionModel:
+    def __init__(self, model_path):
+        # Load the YOLOv8 model from the specified path
+        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=model_path, force_reload=True)
 
-    def detect_violence(self, video_path):
-        # Implement your detection logic
-        # This is a placeholder for demonstration
-        cap = cv2.VideoCapture(video_path)
-        violence_flag = False
+    def detect(self, video_path):
+        # Run the model on the video
+        results = self.model(video_path)
 
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-            # Preprocess frame and make prediction
-            # Example:
-            # processed_frame = preprocess(frame)
-            # prediction = self.model.predict(processed_frame)
-            # if prediction > threshold:
-            #     violence_flag = True
-            #     break
-            # For now, we'll simulate detection
-            # TODO: Replace with actual model prediction
-            pass
+        # Extract relevant information from results
+        detected_classes = results.pred[0][:, -1].tolist()  # Detected classes
+        boxes = results.pred[0][:, :4].tolist()  # Bounding boxes
+        confidences = results.pred[0][:, 4].tolist()  # Confidence scores
 
-        cap.release()
-        return violence_flag
+        return {
+            'boxes': boxes,
+            'classes': detected_classes,
+            'confidences': confidences,
+            'original_image': results.imgs[0]  # This may be used to return an annotated image
+        }
