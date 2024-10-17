@@ -86,7 +86,7 @@ class FightDetectionModel:
 
         # Calculate violence percentage
         violence_percentage = (violence_detected_frames / frames_processed) * 100 if frames_processed > 0 else 0
-        violence_detected = violence_percentage >= 40  # At least 40% frames detected violence
+        violence_detected = violence_percentage >= 20  # At least 20% frames detected violence
 
         return {
             'violenceDetected': violence_detected,
