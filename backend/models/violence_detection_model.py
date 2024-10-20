@@ -1,13 +1,13 @@
-from ultralytics import YOLO
-import cv2  # OpenCV for video processing
+import asyncio
 import os
+import cv2  # OpenCV for video processing
+from ultralytics import YOLO
 
 class FightDetectionModel:
     def __init__(self, model_path):
         # Load the YOLOv8 model from the specified path
         self.model = YOLO(model_path)
         # Define the class IDs that correspond to 'violence' or 'fight'
-        # Adjust this based on your model's class labels
         self.violence_class_ids = [0]  # Example: '0' corresponds to 'fight'
 
     def detect(self, video_path, output_path, websocket=None):
@@ -72,17 +72,16 @@ class FightDetectionModel:
             # Calculate and send progress if websocket is provided
             if websocket:
                 progress = int((frames_processed / total_frames) * 100)
-                # Ensure progress does not exceed 100%
                 progress = min(progress, 100)
-                # Send progress update
-                websocket.send_json({"progress": progress})
+                # Send progress update asynchronously
+                asyncio.run(websocket.send_json({"progress": progress}))
 
         cap.release()
         out.release()
 
         # Final progress update
         if websocket:
-            websocket.send_json({"progress": 100})
+            asyncio.run(websocket.send_json({"progress": 100}))
 
         # Calculate violence percentage
         violence_percentage = (violence_detected_frames / frames_processed) * 100 if frames_processed > 0 else 0
@@ -92,5 +91,5 @@ class FightDetectionModel:
             'violenceDetected': violence_detected,
             'violencePercentage': round(violence_percentage, 2),
             'framesProcessed': frames_processed,
-            'annotatedVideo': os.path.basename(output_path)  # Return the filename to serve via app
+            'annotatedVideo': os.path.basename(output_path)
         }

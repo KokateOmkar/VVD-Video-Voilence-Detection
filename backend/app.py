@@ -43,7 +43,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
     try:
         while True:
             data = await websocket.receive_text()
-            # This server does not expect to receive messages, but you can handle if needed
+            # Server does not expect to receive messages, but you can handle if needed
     except WebSocketDisconnect:
         del connections[client_id]
 
