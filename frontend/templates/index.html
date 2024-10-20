@@ -3,28 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Violence Detection</title>
-    <link rel="stylesheet" href="/static/styles/styles.css">  
+    <title>Video Violence Detection System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #F7FAFC;
+            color: #2D3748;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: #1A365D;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #4A5568;
+            font-size: 1.2em;
+        }
+        h2 {
+            color: #2C5282;
+            margin-top: 30px;
+        }
+        .file-input-wrapper {
+            margin-bottom: 20px;
+        }
+        .file-label {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #E2E8F0;
+            color: #2D3748;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .file-label:hover {
+            background-color: #CBD5E0;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .button {
+            background-color: #ED8936;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #DD6B20;
+        }
+        #progressBar {
+            width: 100%;
+            background-color: #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        #progressFill {
+            height: 20px;
+            background-color: #ED8936;
+            width: 0;
+            transition: width 0.3s;
+        }
+        #progressText {
+            text-align: center;
+            margin-top: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #EDF2F7;
+            border-radius: 5px;
+        }
+        video {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #718096;
+        }
+        #video-name {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2D3748;
+        }
+    </style>
 </head>
 <body>
-    <h1>Video Violence Detection</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="videoFile" name="video" accept="video/*" required>
-        <button type="submit">Upload Video</button>
-    </form>
-    <div id="progressContainer" style="display: none;">
-        <p>Processing Video...</p>
-        <div id="progressBar">
-            <div id="progressFill"></div>
-        </div>
-        <p id="progressText">0%</p>
-    </div>
-    <div id="result"></div>
-    <video id="annotatedVideo" controls style="display: none;">
-        <source id="videoSource" src="" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <div class="container">
+        <header>
+            <h1>Video Violence Detection System</h1>
+            <p class="subtitle">Advanced AI-powered analysis for safer content</p>
+        </header>
 
-    <script src="/static/scripts/main.js"></script>
+        <main>
+            <section id="upload-section">
+                <h2>Upload Your Video</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="videoFile" name="video" accept="video/*" required>
+                        <label for="videoFile" class="file-label">Choose a video file</label>
+                    </div>
+                    <p id="video-name"></p>
+                    <button type="submit" class="button">Analyze Video</button>
+                </form>
+            </section>
+
+            <section id="progress-section">
+                <div id="progressContainer" style="display: none;">
+                    <h3>Processing Video</h3>
+                    <div id="progressBar">
+                        <div id="progressFill"></div>
+                    </div>
+                    <p id="progressText">0%</p>
+                </div>
+            </section>
+
+            <section id="result-section">
+                <div id="result"></div>
+                <video id="annotatedVideo" controls style="display: none;">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </section>
+
+            <section id="info-section">
+                <h2>About Our Technology</h2>
+                <p>Our advanced AI algorithm analyzes video content frame by frame to detect potential violent scenes. This tool is designed to assist content moderators, parents, and educators in identifying inappropriate content.</p>
+                <ul>
+                    <li>High accuracy in detecting various forms of violence</li>
+                    <li>Fast processing times for quick results</li>
+                    <li>User-friendly interface for easy operation</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Video Violence Detection System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Generate a unique client ID (UUID)
+        function generateUUID() {
+            var d = new Date().getTime();
+            var d2 = (performance && performance.now && (performance.now() * 1000)) || 0;
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16;
+                if (d > 0) {
+                    r = (d + r) % 16 | 0;
+                    d = Math.floor(d / 16);
+                } else {
+                    r = (d2 + r) % 16 | 0;
+                    d2 = Math.floor(d2 / 16);
+                }
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
+
+        const clientId = generateUUID();
+        const ws = new WebSocket(`ws://${window.location.host}/ws/${clientId}`);
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established.');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.progress !== undefined) {
+                updateProgressBar(data.progress);
+            }
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed.');
+        };
+
+        document.getElementById('videoFile').addEventListener('change', function () {
+            const videoFile = this.files[0];
+            if (videoFile) {
+                document.getElementById('video-name').innerText = `Uploaded video: ${videoFile.name}`;
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const videoFile = document.getElementById('videoFile').files[0];
+            if (!videoFile) {
+                alert('Please select a video file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', videoFile);
+
+            document.getElementById('progressContainer').style.display = 'block';
+            updateProgressBar(0);
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('annotatedVideo').style.display = 'none';
+
+            try {
+                const response = await fetch('/detect', {
+                    method: 'POST',
+                    headers: {
+                        'client-id': clientId
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('result').innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                } else {
+                    const message = data.violenceDetected ? 'Violence Detected!' : 'No Violence Detected.';
+                    const violenceInfo = `Violence Percentage: ${data.violencePercentage.toFixed(2)}%`;
+                    const framesInfo = `Frames Processed: ${data.framesProcessed}`;
+                    const resultHTML = `
+                        <h3>${message}</h3>
+                        <p>${violenceInfo}</p>
+                        <p>${framesInfo}</p>
+                    `;
+                    document.getElementById('result').innerHTML = resultHTML;
+                    
+                    if (data.annotatedVideoUrl) {
+                        document.getElementById('videoSource').src = data.annotatedVideoUrl;
+                        document.getElementById('annotatedVideo').load();
+                        document.getElementById('annotatedVideo').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `<p class="error">An error occurred while detecting violence.</p>`;
+            } finally {
+                document.getElementById('progressContainer').style.display = 'none';
+            }
+        });
+
+        function updateProgressBar(progress) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            progressFill.style.width = `${progress}%`;
+            progressText.innerText = `${progress.toFixed(1)}%`;
+        }
+    </script>
 </body>
-</html> 
+</html>
